@@ -19,7 +19,9 @@ How to use
 1. `WxBeaconData.swift` と `WxBeaconMonitor.swift` をあなたのXcode の project にコピーしてください。
 2. データ表示を行いたいclass で、WxBeaconMonitorDelegate protocol に沿って実装してください。
 3. 下記のように WxBeaconMonitor を初期化してください。
-    let beaconMonitor = WxBeaconMonitor()
-    beaconMonitor.delegate = self
-    beaconMonitor.startMonitoring(nil, backgroundFlag: true)
-4. WxBeacon の値を受信すると、func didUpdateWeatherData(data: WxBeaconData?) が呼び出されます。
+```
+let beaconMonitor = WxBeaconMonitor()
+beaconMonitor.delegate = self
+beaconMonitor.startMonitoring(nil, backgroundFlag: true)
+```
+4. WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
