@@ -1,0 +1,6 @@
+Pods/*
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcworkspace/contents.xcworkspacedata
+Build
+.DS_Store

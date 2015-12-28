@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F92AB3291C27F1E700F2019C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92AB3281C27F1E700F2019C /* AppDelegate.swift */; };
+		F92AB32B1C27F1E700F2019C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92AB32A1C27F1E700F2019C /* ViewController.swift */; };
+		F92AB32E1C27F1E700F2019C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F92AB32C1C27F1E700F2019C /* Main.storyboard */; };
+		F92AB3301C27F1E700F2019C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F92AB32F1C27F1E700F2019C /* Assets.xcassets */; };
+		F92AB3331C27F1E700F2019C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F92AB3311C27F1E700F2019C /* LaunchScreen.storyboard */; };
+		F92AB3571C27F29100F2019C /* WxBeaconData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92AB3561C27F29100F2019C /* WxBeaconData.swift */; };
+		F92AB35A1C29235000F2019C /* WxBeaconMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92AB3591C29235000F2019C /* WxBeaconMonitor.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F92AB3251C27F1E700F2019C /* WxBeacon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WxBeacon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F92AB3281C27F1E700F2019C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F92AB32A1C27F1E700F2019C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F92AB32D1C27F1E700F2019C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F92AB32F1C27F1E700F2019C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F92AB3321C27F1E700F2019C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F92AB3341C27F1E700F2019C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F92AB3561C27F29100F2019C /* WxBeaconData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WxBeaconData.swift; path = WxBeacon/WxBeaconData.swift; sourceTree = "<group>"; };
+		F92AB3591C29235000F2019C /* WxBeaconMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WxBeaconMonitor.swift; path = WxBeacon/WxBeaconMonitor.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F92AB3221C27F1E700F2019C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F92AB31C1C27F1E700F2019C = {
+			isa = PBXGroup;
+			children = (
+				F92AB3581C27FE7B00F2019C /* WxBeacon */,
+				F92AB3271C27F1E700F2019C /* WxBeaconSample */,
+				F92AB3261C27F1E700F2019C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F92AB3261C27F1E700F2019C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F92AB3251C27F1E700F2019C /* WxBeacon.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F92AB3271C27F1E700F2019C /* WxBeaconSample */ = {
+			isa = PBXGroup;
+			children = (
+				F92AB3281C27F1E700F2019C /* AppDelegate.swift */,
+				F92AB32A1C27F1E700F2019C /* ViewController.swift */,
+				F92AB32C1C27F1E700F2019C /* Main.storyboard */,
+				F92AB32F1C27F1E700F2019C /* Assets.xcassets */,
+				F92AB3311C27F1E700F2019C /* LaunchScreen.storyboard */,
+				F92AB3341C27F1E700F2019C /* Info.plist */,
+			);
+			name = WxBeaconSample;
+			path = WxBeacon;
+			sourceTree = "<group>";
+		};
+		F92AB3581C27FE7B00F2019C /* WxBeacon */ = {
+			isa = PBXGroup;
+			children = (
+				F92AB3561C27F29100F2019C /* WxBeaconData.swift */,
+				F92AB3591C29235000F2019C /* WxBeaconMonitor.swift */,
+			);
+			name = WxBeacon;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F92AB3241C27F1E700F2019C /* WxBeacon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F92AB34D1C27F1E700F2019C /* Build configuration list for PBXNativeTarget "WxBeacon" */;
+			buildPhases = (
+				F92AB3211C27F1E700F2019C /* Sources */,
+				F92AB3221C27F1E700F2019C /* Frameworks */,
+				F92AB3231C27F1E700F2019C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WxBeacon;
+			productName = WxBeacon;
+			productReference = F92AB3251C27F1E700F2019C /* WxBeacon.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F92AB31D1C27F1E700F2019C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = Weathernews;
+				TargetAttributes = {
+					F92AB3241C27F1E700F2019C = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = F92AB3201C27F1E700F2019C /* Build configuration list for PBXProject "WxBeacon" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F92AB31C1C27F1E700F2019C;
+			productRefGroup = F92AB3261C27F1E700F2019C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F92AB3241C27F1E700F2019C /* WxBeacon */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F92AB3231C27F1E700F2019C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F92AB3331C27F1E700F2019C /* LaunchScreen.storyboard in Resources */,
+				F92AB3301C27F1E700F2019C /* Assets.xcassets in Resources */,
+				F92AB32E1C27F1E700F2019C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F92AB3211C27F1E700F2019C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F92AB32B1C27F1E700F2019C /* ViewController.swift in Sources */,
+				F92AB3291C27F1E700F2019C /* AppDelegate.swift in Sources */,
+				F92AB3571C27F29100F2019C /* WxBeaconData.swift in Sources */,
+				F92AB35A1C29235000F2019C /* WxBeaconMonitor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F92AB32C1C27F1E700F2019C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F92AB32D1C27F1E700F2019C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F92AB3311C27F1E700F2019C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F92AB3321C27F1E700F2019C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F92AB34B1C27F1E700F2019C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F92AB34C1C27F1E700F2019C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F92AB34E1C27F1E700F2019C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WxBeacon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.weathernews.WxBeacon;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F92AB34F1C27F1E700F2019C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = WxBeacon/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.weathernews.WxBeacon;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F92AB3201C27F1E700F2019C /* Build configuration list for PBXProject "WxBeacon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F92AB34B1C27F1E700F2019C /* Debug */,
+				F92AB34C1C27F1E700F2019C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F92AB34D1C27F1E700F2019C /* Build configuration list for PBXNativeTarget "WxBeacon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F92AB34E1C27F1E700F2019C /* Debug */,
+				F92AB34F1C27F1E700F2019C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F92AB31D1C27F1E700F2019C /* Project object */;
+}
