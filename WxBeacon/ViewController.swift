@@ -16,6 +16,7 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
     private var beaconMonitor: WxBeaconMonitor!
     private var dateFormatter: NSDateFormatter!
     
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +26,7 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
 
         beaconMonitor = WxBeaconMonitor()
         beaconMonitor.delegate = self
-        beaconMonitor.startMonitoring(nil, backgroundFlag: true)
+        beaconMonitor.startMonitoring(true)
         
         self.didUpdateWeatherData(nil)
     }
@@ -35,6 +36,7 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - WxBeaconMonitorDelegate
     func didUpdateWeatherData(data: WxBeaconData?) {
         if data != nil {
             dateLabel.text        = dateFormatter.stringFromDate(NSDate())
@@ -47,12 +49,6 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
             humidityLabel.text    = "-"
             pressureLabel.text    = "-"
         }
-    }
-    
-    func didEnterBeaconRegion() {
-    }
-    
-    func didExitBeaconRegion() {
     }
     
     func showAlert(message: String) {

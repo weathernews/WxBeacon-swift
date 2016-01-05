@@ -10,22 +10,22 @@ import UIKit
 import CoreLocation
 import CoreBluetooth
 
+let WxBeaconProxyimityUuid = "C722DB4C-5D91-1801-BEB5-001C4DE7B3FD"  // UUID for WxBeacon
+
 // MARK: - protocol WxBeaconMonitorDelegate
-protocol WxBeaconMonitorDelegate: class {
+@objc protocol WxBeaconMonitorDelegate: class {
     func didUpdateWeatherData(data: WxBeaconData?)
-    func didEnterBeaconRegion()
-    func didExitBeaconRegion()
     func showAlert(message: String)
+    optional func didEnterBeaconRegion()
+    optional func didExitBeaconRegion()
 }
 
 // MARK: - class WxBeaconMonitor
 class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDelegate {
-    let defaultProxyimityUuid = "C722DB4C-5D91-1801-BEB5-001C4DE7B3FD"  // UUID for WxBeacon
     var delegate: WxBeaconMonitorDelegate?
     
     private var locationManager: CLLocationManager = CLLocationManager()
     private var centralManager: CBCentralManager = CBCentralManager()
-    private var uuid: NSUUID? = nil
 
     private var beaconRegion: CLBeaconRegion? = nil
     private var currentRegion: CLBeaconRegion? = nil
@@ -55,12 +55,8 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
     }
     
     // Beaconのモニタリングを開始する
-    func startMonitoring(proximityUuid: NSUUID?, backgroundFlag:Bool) {
-        if proximityUuid != nil {
-            uuid = proximityUuid!
-        } else {
-            uuid = NSUUID(UUIDString: defaultProxyimityUuid)!
-        }
+    func startMonitoring(backgroundFlag:Bool) {
+        let uuid = NSUUID(UUIDString: WxBeaconProxyimityUuid)
         
         print("startMonitoring UUID:\(uuid!.UUIDString), backgroundFlag:\(backgroundFlag)")
         backgroundEnable = backgroundFlag
@@ -199,7 +195,7 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             print("CLAuthorizationStatus Authorized")
             if beaconRegion == nil {
-                self.startMonitoring(uuid, backgroundFlag: backgroundEnable)
+                self.startMonitoring(backgroundEnable)
             }
             return
             
@@ -250,14 +246,14 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("didEnterRegion: \(region.identifier)")
         if region.identifier == beaconRegion?.identifier {
-            delegate?.didEnterBeaconRegion()
+            delegate?.didEnterBeaconRegion?()
         }
     }
     
     func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("didExitRegion: \(region.identifier)")
         if region.identifier == beaconRegion?.identifier {
-            delegate?.didExitBeaconRegion()
+            delegate?.didExitBeaconRegion?()
         }
     }
     
@@ -269,7 +265,7 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         if beacon != nil {
             // beacon の major, minor の値を気象観測値として解釈
             let wxdata = WxBeaconData.init(beacon: beacon)
-            print("\(NSDate()) beacon data:\(wxdata.description())")
+            print("\(NSDate()) beacon rssi:\(beacon!.rssi), \(wxdata.description)")
             delegate?.didUpdateWeatherData(wxdata)
             
             if markCurrentRegion {

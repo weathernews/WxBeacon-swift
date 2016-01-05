@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-class WxBeaconData {
+@objc class WxBeaconData: NSObject {
     var temperature: Double  // -30.0〜72.3℃
     var humidity: Double     // 0〜100%
     var pressure: Double     // 300.0〜1119.1 hPa
@@ -32,7 +32,7 @@ class WxBeaconData {
         counter  = Int(major >> 14)
     }
     
-    func description() -> String {
+    override var description: String {
         return String(format: "temperature:%.1fC, humidity:%.0f%%, pressure:%.1fhPa, counter:%d", temperature, humidity, pressure, counter)
     }
 }
