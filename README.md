@@ -8,6 +8,7 @@ WxBeacon は気温、湿度、気圧を観測し、iBeacon の仕組みを利用
 WxBeacon はウェザーニュースタッチの有料会員のうち、ウェザーリポート送信などで 2000pt を達成した方にプレゼントしています。  
 ![WxBeacon](WxBeacon.jpg)
 
+
 Requirement
 --------
 iOS 8.0以降、Bluetooth, 位置情報の利用許可が必要です。  
@@ -16,12 +17,12 @@ iOS 8.0以降、Bluetooth, 位置情報の利用許可が必要です。
 
 How to use
 --------
-1. `WxBeaconData.swift` と `WxBeaconMonitor.swift` をあなたのXcode の project にコピーしてください。
-2. データ表示を行いたいclass で、WxBeaconMonitorDelegate protocol に沿って実装してください。
-3. 下記のように WxBeaconMonitor を初期化してください。
-```
+* `WxBeaconData.swift` と `WxBeaconMonitor.swift` をあなたのXcode のproject にコピーしてください。
+* データ表示を行いたいclass で、WxBeaconMonitorDelegate protocol に沿って実装してください。
+* 下記のように WxBeaconMonitor を初期化してください。
+```swift
 let beaconMonitor = WxBeaconMonitor()
 beaconMonitor.delegate = self
-beaconMonitor.startMonitoring(nil, backgroundFlag: true)
+beaconMonitor.startMonitoring(true)
 ```
-4. WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
+* WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
