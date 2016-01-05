@@ -17,7 +17,8 @@ WxBeacon はウェザーニュースタッチの有料会員のうち、ウェ�
 Requirement
 --------
 iOS 8.0以降、Bluetooth, 位置情報の利用許可が必要です。  
-(WxBeacon の受信自体はiOS 7.0以降で可能ですが、本サンプルではエラー表示にUIAlertController を使用しているため、iOS 8.0以降を対象としています。)
+(WxBeacon の受信自体はiOS 7.0以降で可能ですが、本サンプルではエラー表示にUIAlertController を使用しているため、iOS 8.0以降を対象としています。)  
+本サンプルコードは Xcode 7.2, iOS 9.2 で動作確認を行っています。
 
 
 How to use
@@ -31,3 +32,4 @@ beaconMonitor.delegate = self
 beaconMonitor.startMonitoring(true)
 ```
 * WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
+* エラーがあった場合は ```func showAlert(message: String)``` が呼ばれます。
