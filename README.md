@@ -34,4 +34,4 @@ beaconMonitor.startMonitoring(true)
 ```
 * WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
 * エラーがあった場合は ```func showAlert(message: String)``` が呼ばれます。
-* startMonitoring() の引数を true にした場合、アプリがバックグラウンドにいても beacon の受信を続けます。
+* `startMonitoring()` の引数を `true` にした場合、アプリがバックグラウンドにいても beacon の受信を続けます。
