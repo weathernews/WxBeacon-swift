@@ -24,6 +24,7 @@ iOS 8.0以降、Bluetooth, 位置情報の利用許可が必要です。
 How to use
 --------
 * `WxBeaconData.swift` と `WxBeaconMonitor.swift` をあなたのXcode のproject にコピーしてください。
+* Info.plist に `NSLocationAlwaysUsageDescription` の項目を追加してください。String の値は空欄でも良いです。
 * データ表示を行いたいclass で、WxBeaconMonitorDelegate protocol に沿って実装してください。
 * 下記のように WxBeaconMonitor を初期化してください。
 ```swift
@@ -33,3 +34,4 @@ beaconMonitor.startMonitoring(true)
 ```
 * WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
 * エラーがあった場合は ```func showAlert(message: String)``` が呼ばれます。
+* startMonitoring() の引数を true にした場合、アプリがバックグラウンドにいても beacon の受信を続けます。
