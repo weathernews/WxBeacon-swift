@@ -44,8 +44,8 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         self.checkBluetoothStatus()
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "enterBackground", name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        notificationCenter.addObserver(self, selector: "enterForeground", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WxBeaconMonitor.enterBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WxBeaconMonitor.enterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     deinit {
