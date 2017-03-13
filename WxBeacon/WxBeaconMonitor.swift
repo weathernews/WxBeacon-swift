@@ -14,59 +14,57 @@ let WxBeaconProxyimityUuid = "C722DB4C-5D91-1801-BEB5-001C4DE7B3FD"  // UUID for
 
 // MARK: - protocol WxBeaconMonitorDelegate
 @objc protocol WxBeaconMonitorDelegate: class {
-    func didUpdateWeatherData(data: WxBeaconData?)
-    func showAlert(message: String)
-    optional func didEnterBeaconRegion()
-    optional func didExitBeaconRegion()
+    func didUpdateWeatherData(_ data: WxBeaconData?)
+    func showAlert(_ message: String)
+    @objc optional func didEnterBeaconRegion()
+    @objc optional func didExitBeaconRegion()
 }
 
 // MARK: - class WxBeaconMonitor
 class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDelegate {
     var delegate: WxBeaconMonitorDelegate?
     
-    private var locationManager: CLLocationManager = CLLocationManager()
-    private var centralManager: CBCentralManager = CBCentralManager()
+    private var locationManager = CLLocationManager()
+    private var centralManager  = CBCentralManager()
 
-    private var beaconRegion: CLBeaconRegion? = nil
+    private var beaconRegion:  CLBeaconRegion? = nil
     private var currentRegion: CLBeaconRegion? = nil
-    private var markCurrentRegion: Bool = false
+    private var markCurrentRegion = false
 
-    private var backgroundEnable: Bool = true
-    private var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var backgroundEnable = true
+    private var backgroundTask = UIBackgroundTaskInvalid
     
     // MARK: -
     override init() {
         super.init()
+        
         locationManager.delegate = self
 
         let option = [ CBCentralManagerOptionShowPowerAlertKey: false ]
         centralManager = CBCentralManager.init(delegate: self, queue: nil, options: option)
         self.checkBluetoothStatus()
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(WxBeaconMonitor.enterBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WxBeaconMonitor.enterForeground), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(self.enterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(self.enterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     deinit {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // Beaconのモニタリングを開始する
-    func startMonitoring(backgroundFlag:Bool) {
-        let uuid = NSUUID(UUIDString: WxBeaconProxyimityUuid)
+    func startMonitoring(_ backgroundFlag: Bool) {
+        let uuid = UUID(uuidString: WxBeaconProxyimityUuid)
         
-        print("startMonitoring UUID:\(uuid!.UUIDString), backgroundFlag:\(backgroundFlag)")
+        print("startMonitoring UUID:\(uuid!.uuidString), backgroundFlag:\(backgroundFlag)")
         backgroundEnable = backgroundFlag
 
         switch( CLLocationManager.authorizationStatus() ){
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .authorizedAlways, .authorizedWhenInUse:
             beaconRegion = CLBeaconRegion.init(proximityUUID: uuid!, identifier: "WxBeacon")
-            locationManager.startMonitoringForRegion(beaconRegion!)
-            locationManager.requestStateForRegion(beaconRegion!)
-            break
+            locationManager.startMonitoring(for: beaconRegion!)
+            locationManager.requestState(for: beaconRegion!)
         default:
             break
         }
@@ -74,36 +72,32 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
     
     // Beaconのモニタリングを停止する
     func stopMonitoring() {
-        if beaconRegion != nil {
-            locationManager.stopRangingBeaconsInRegion(beaconRegion!)
-            locationManager.stopMonitoringForRegion(beaconRegion!)
-            beaconRegion = nil
-            
-            if currentRegion != nil {
-                locationManager.stopMonitoringForRegion(currentRegion!)
-                currentRegion = nil
-            }
-        }
+        guard let beaconRegion = beaconRegion else { return }
+        locationManager.stopRangingBeacons(in: beaconRegion)
+        locationManager.stopMonitoring(for: beaconRegion)
+        self.beaconRegion = nil
+        
+        guard let currentRegion = currentRegion else  { return }
+        locationManager.stopMonitoring(for: currentRegion)
+        self.currentRegion = nil
     }
     
     func suspendMonitoring() {
-        if beaconRegion != nil {
-            locationManager.stopRangingBeaconsInRegion(beaconRegion!)
-            locationManager.stopMonitoringForRegion(beaconRegion!)
-            if currentRegion != nil {
-                locationManager.stopMonitoringForRegion(currentRegion!)
-            }
-        }
+        guard let beaconRegion = beaconRegion else { return }
+        locationManager.stopRangingBeacons(in: beaconRegion)
+        locationManager.stopMonitoring(for: beaconRegion)
+        
+        guard let currentRegion = currentRegion else  { return }
+        locationManager.stopMonitoring(for: currentRegion)
     }
     
     func resumeMonitoring() {
-        if beaconRegion != nil {
-            locationManager.startMonitoringForRegion(beaconRegion!)
-            locationManager.requestStateForRegion(beaconRegion!)
-            if currentRegion != nil {
-                locationManager.startMonitoringForRegion(currentRegion!)
-            }
-        }
+        guard let beaconRegion = beaconRegion else { return }
+        locationManager.startMonitoring(for: beaconRegion)
+        locationManager.requestState(for: beaconRegion)
+
+        guard let currentRegion = currentRegion else  { return }
+        locationManager.startMonitoring(for: currentRegion)
     }
     
     // アプリがバックグラウンドに入った時の処理
@@ -111,8 +105,8 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         if backgroundEnable {
             if backgroundTask == UIBackgroundTaskInvalid {
                 print("Begin background task.")
-                let application = UIApplication.sharedApplication()
-                backgroundTask = application.beginBackgroundTaskWithExpirationHandler({
+                let application = UIApplication.shared
+                backgroundTask = application.beginBackgroundTask(expirationHandler: {
                     print("End background task.")
                     application.endBackgroundTask(self.backgroundTask)
                     self.backgroundTask = UIBackgroundTaskInvalid
@@ -128,7 +122,7 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         if backgroundEnable {
             if backgroundTask != UIBackgroundTaskInvalid {
                 print("End background task.")
-                UIApplication.sharedApplication().endBackgroundTask(backgroundTask)
+                UIApplication.shared.endBackgroundTask(backgroundTask)
                 backgroundTask = UIBackgroundTaskInvalid
             }
         } else {
@@ -136,12 +130,12 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         }
     }
     
-    func selectBeacon(beacons: [CLBeacon]) -> CLBeacon? {
+    func selectBeacon(_ beacons: [CLBeacon]) -> CLBeacon? {
         // beacons は RSSI の大きい順にソートされているが、
         // CLProximityUnknown の場合は RSSI が 127 になり、beacons の先頭に
         // 来るので、それを考慮して一番 RSSI の大きい beacon を返す。
         for beacon in beacons {
-            if beacon.proximity != .Unknown {
+            if beacon.proximity != .unknown {
                 return beacon
             }
         }
@@ -154,58 +148,56 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         var message: String? = nil
         
         switch centralManager.state {
-        case .Unknown:
+        case .unknown:
             print("Bluetooth Unknown")
-        case .Resetting:
+        case .resetting:
             print("Bluetooth Resetting")
-        case .Unsupported:
+        case .unsupported:
             message = "この端末はBluetoorhをサポートしていません"
-        case .Unauthorized:
+        case .unauthorized:
             message = "Bluetoothの利用を許可してください"
-        case .PoweredOff:
+        case .poweredOff:
             message = "Bluetoothの利用を許可してください"
-        case .PoweredOn:
+        case .poweredOn:
             print("Bluetooth PowerOn")
         }
         
-        if message != nil {
-            delegate?.showAlert(message!)
+        if let message = message {
+            delegate?.showAlert(message)
         }
     }
     
-    func CLRegionStateString(state: CLRegionState) -> String {
+    func CLRegionStateString(_ state: CLRegionState) -> String {
         switch state {
-        case .Inside:
+        case .inside:
             return "Inside"
-        case .Outside:
+        case .outside:
             return "OutSide"
-        case .Unknown:
+        case .unknown:
             return "Unknown"
         }
     }
     
     // MARK: - CLLocationManagerDelegate
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-        case .NotDetermined:
+        case .notDetermined:
             print("CLAuthorizationStatus NotDetermined")
             locationManager.requestAlwaysAuthorization()
             return
             
-        case .AuthorizedAlways, .AuthorizedWhenInUse:
+        case .authorizedAlways, .authorizedWhenInUse:
             print("CLAuthorizationStatus Authorized")
             if beaconRegion == nil {
                 self.startMonitoring(backgroundEnable)
             }
             return
             
-        case .Restricted:
+        case .restricted:
             print("CLAuthorizationStatus Restricted")
-            break
             
-        case .Denied:
+        case .denied:
             print("CLAuthorizationStatus Denied")
-            break
         }
         
         // Alert表示
@@ -214,8 +206,8 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
         self.stopMonitoring()
     }
     
-    func locationManager(manager: CLLocationManager, didDetermineState state: CLRegionState, forRegion region: CLRegion) {
-        if UIApplication.sharedApplication().applicationState == .Background {
+    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        if UIApplication.shared.applicationState == .background {
             self.enterBackground()
         }
         
@@ -223,13 +215,13 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
             print("BeaconRegion changed. \(self.CLRegionStateString(state))")
             
             switch state {
-            case .Inside:
-                locationManager.startRangingBeaconsInRegion(beaconRegion!)
+            case .inside:
+                locationManager.startRangingBeacons(in: beaconRegion!)
                 print("Ranging started. \(beaconRegion!.identifier)")
                 markCurrentRegion = true
                 
-            case .Outside:
-                locationManager.stopRangingBeaconsInRegion(beaconRegion!)
+            case .outside:
+                locationManager.stopRangingBeacons(in: beaconRegion!)
                 print("Ranging stopped. \(beaconRegion!.identifier)")
                 
             default:
@@ -237,57 +229,56 @@ class WxBeaconMonitor: NSObject, CLLocationManagerDelegate, CBCentralManagerDele
             }
         }
         
-        if state == .Outside && region.identifier == currentRegion?.identifier {
+        if state == .outside && region.identifier == currentRegion?.identifier {
             // モニタしていたRegionからExitしたので、新たに現在のRegionをマークすることを要求する
             markCurrentRegion = true
         }
     }
 
-    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("didEnterRegion: \(region.identifier)")
         if region.identifier == beaconRegion?.identifier {
             delegate?.didEnterBeaconRegion?()
         }
     }
     
-    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("didExitRegion: \(region.identifier)")
         if region.identifier == beaconRegion?.identifier {
             delegate?.didExitBeaconRegion?()
         }
     }
     
-    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         //print("didRangeBeacons")
         // 複数のBeaconが見つかった場合一番近い1つを取得する
-        let beacon = selectBeacon(beacons)
-        
-        if beacon != nil {
-            // beacon の major, minor の値を気象観測値として解釈
-            let wxdata = WxBeaconData.init(beacon: beacon)
-            print("\(NSDate()) beacon rssi:\(beacon!.rssi), \(wxdata.description)")
-            delegate?.didUpdateWeatherData(wxdata)
-            
-            if markCurrentRegion {
-                if currentRegion != nil {
-                    // 以前のRegionのモニタリングを停止する
-                    locationManager.stopMonitoringForRegion(currentRegion!)
-                }
-                // 新たなRegionのモニタリングを開始する
-                currentRegion = CLBeaconRegion.init(proximityUUID: beacon!.proximityUUID,
-                                                            major: beacon!.major.unsignedShortValue,
-                                                            minor: beacon!.minor.unsignedShortValue,
-                                                       identifier: "currentRegion")
-                locationManager.startMonitoringForRegion(currentRegion!)
-                markCurrentRegion = false  // マーク要求をクリアする
-            }
-        } else {
+        guard let beacon = selectBeacon(beacons) else {
             print("beacon is nil !!!")
+            return
+        }
+        
+        // beacon の major, minor の値を気象観測値として解釈
+        let wxdata = WxBeaconData(beacon: beacon)
+        print("\(Date()) beacon rssi:\(beacon.rssi), \(wxdata.description)")
+        delegate?.didUpdateWeatherData(wxdata)
+        
+        if markCurrentRegion {
+            if let currentRegion = currentRegion {
+                // 以前のRegionのモニタリングを停止する
+                locationManager.stopMonitoring(for: currentRegion)
+            }
+            // 新たなRegionのモニタリングを開始する
+            currentRegion = CLBeaconRegion.init(proximityUUID: beacon.proximityUUID,
+                                                major: beacon.major.uint16Value,
+                                                minor: beacon.minor.uint16Value,
+                                                identifier: "currentRegion")
+            locationManager.startMonitoring(for: currentRegion!)
+            markCurrentRegion = false  // マーク要求をクリアする
         }
     }
 
     // MARK: - CBCentralManagerDelegate
-    func centralManagerDidUpdateState(central: CBCentralManager) {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
         self.checkBluetoothStatus()
     }
     

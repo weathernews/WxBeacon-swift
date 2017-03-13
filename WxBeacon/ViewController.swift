@@ -13,18 +13,20 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
     @IBOutlet weak var humidityLabel: UILabel!
     @IBOutlet weak var pressureLabel: UILabel!
     
-    private var beaconMonitor: WxBeaconMonitor!
-    private var dateFormatter: NSDateFormatter!
+    private let beaconMonitor = WxBeaconMonitor()
+    private let dateFormatter: DateFormatter = {
+        let formatter        = DateFormatter()
+        formatter.timeZone   = NSTimeZone.system
+        formatter.locale     = Locale(identifier: "ja_JP")
+        formatter.calendar   = Calendar(identifier: .gregorian)
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return formatter
+    }()
     
     // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP")
-        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-
-        beaconMonitor = WxBeaconMonitor()
         beaconMonitor.delegate = self
         beaconMonitor.startMonitoring(true)
         
@@ -37,25 +39,26 @@ class ViewController: UIViewController, WxBeaconMonitorDelegate {
     }
 
     // MARK: - WxBeaconMonitorDelegate
-    func didUpdateWeatherData(data: WxBeaconData?) {
-        if data != nil {
-            dateLabel.text        = dateFormatter.stringFromDate(NSDate())
-            temperatureLabel.text = String(format: "%.1f℃",   data!.temperature)
-            humidityLabel.text    = String(format: "%.0f%%",  data!.humidity)
-            pressureLabel.text    = String(format: "%.1fhPa", data!.pressure)
-        } else {
+    func didUpdateWeatherData(_ data: WxBeaconData?) {
+        guard let data = data else {
             dateLabel.text        = "-"
             temperatureLabel.text = "-"
             humidityLabel.text    = "-"
             pressureLabel.text    = "-"
+            return
         }
+        
+        dateLabel.text        = dateFormatter.string(from: Date())
+        temperatureLabel.text = String(format: "%.1f℃",   data.temperature)
+        humidityLabel.text    = String(format: "%.0f%%",  data.humidity)
+        pressureLabel.text    = String(format: "%.1fhPa", data.pressure)
     }
     
-    func showAlert(message: String) {
-        let alert = UIAlertController(title: "error", message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil)
+    func showAlert(_ message: String) {
+        let alert = UIAlertController(title: "error", message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
