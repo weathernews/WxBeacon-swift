@@ -18,7 +18,7 @@ Requirement
 --------
 iOS 8.0以降、Bluetooth, 位置情報の利用許可が必要です。  
 (WxBeacon の受信自体はiOS 7.0以降で可能ですが、本サンプルではエラー表示にUIAlertController を使用しているため、iOS 8.0以降を対象としています。)  
-本サンプルコードは Xcode 7.2, iOS 9.2 で動作確認を行っています。
+本サンプルコードは Xcode 8.2.1, iOS 10.2.1 で動作確認を行っています。
 
 
 How to use
@@ -32,6 +32,6 @@ let beaconMonitor = WxBeaconMonitor()
 beaconMonitor.delegate = self
 beaconMonitor.startMonitoring(true)
 ```
-* WxBeacon の値を受信すると、```func didUpdateWeatherData(data: WxBeaconData?)``` が呼び出されます。
-* エラーがあった場合は ```func showAlert(message: String)``` が呼ばれます。
+* WxBeacon の値を受信すると、```func didUpdateWeatherData(_ data: WxBeaconData?)``` が呼び出されます。
+* エラーがあった場合は ```func showAlert(_ message: String)``` が呼ばれます。
 * `startMonitoring()` の引数を `true` にした場合、アプリがバックグラウンドにいても beacon の受信を続けます。
